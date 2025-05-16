@@ -44,6 +44,7 @@ Declaraitve macros
 
 
 Some stumbling blocks,
+- Disable rust-analyzer
 - Previous rust did not allow for concat to concat macro u64
 - Declarative macros do not have access to outer context
 - proc_macros need their own crates
