@@ -1,7 +1,7 @@
 mod macros;
 
 fn is_even(a: u32) -> bool {
-    sprinkle_magic_here!();
+    todo!();
 }
 
 fn main() {

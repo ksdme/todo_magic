@@ -1,11 +1,11 @@
 use quote::ToTokens;
 use std::{env, fs};
-use syn::{self, Expr, Item, Stmt, spanned::Spanned};
+use syn::{self, Item, Stmt, spanned::Spanned};
 
 fn main() {
-    // println!("cargo:rerun-if-changed=nope");
-    println!("cargo:rerun-if-changed=main.rs");
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=nope");
+    // println!("cargo:rerun-if-changed=main.rs");
+    // println!("cargo:rerun-if-changed=build.rs");
 
     let contents = fs::read_to_string("src/main.rs").unwrap();
     let ast = syn::parse_file(contents.as_str()).unwrap();
@@ -113,6 +113,7 @@ pub fn complete_code(signature: &str) -> reqwest::Result<Option<String>> {
                     Use explicit return statements.
                     Output the plain contents of the function body.
                     Do not response with Markdown or code blocks.
+                    Do not use external crates. You only have access to the standard lib.
 
                     The function signature is,
                     {}

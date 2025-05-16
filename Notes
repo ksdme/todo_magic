@@ -1,0 +1,50 @@
+Who am I?
+- Kilari Teja
+- Senior Cloud Software Engineer, Platform.sh
+- Open Source Contributor
+
+
+
+Goal
+- Build a todo!() macro that is magical.
+- Macros
+- Build Scripts
+- Demo
+
+
+
+What do you need to do this?
+- Intent
+- Context
+- Injection
+
+
+
+Constraints
+- Needs to run before the compilation phase
+
+
+
+Macros
+- Declarative Macros
+- Procedural Macros
+
+
+
+Build Script
+- build.rs
+- Compiled and run before src
+- Has access to build dependencies
+
+
+
+Declaraitve macros
+- include!
+
+
+
+Some stumbling blocks,
+- Previous rust did not allow for concat to concat macro u64
+- Declarative macros do not have access to outer context
+- proc_macros need their own crates
+- include! does compile checks
