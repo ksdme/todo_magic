@@ -19,7 +19,7 @@ fn main() {
                     .segments
                     .first()
                     .and_then(|segment| Some(segment.ident.to_string()))
-                    .and_then(|name| Some(name == "sprinkle_magic_here"))
+                    .and_then(|name| Some(name == "todo_magic"))
                     .unwrap_or_default();
 
                 if sprinkle_here {
@@ -49,7 +49,7 @@ fn sprinkle(fn_name: &str, signature: &str, line: usize) {
             .as_str(),
         )
         .expect(format!("Could not generate sprinkle for fn {}", fn_name).as_str());
-    println!("Generated {} for {}", code, fn_name);
+    println!("generated {} for {}", code, fn_name);
 
     let out_dir = env::var("OUT_DIR").expect("Could not find OUT_DIR");
     let base_path = format!("{}/sprinkles", out_dir);

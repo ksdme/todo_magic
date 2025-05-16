@@ -48,3 +48,10 @@ Some stumbling blocks,
 - Declarative macros do not have access to outer context
 - proc_macros need their own crates
 - include! does compile checks
+- Debugging build_scripts are hard
+
+
+
+Where do we go from here?
+- Build this into the compiler
+- Profit
