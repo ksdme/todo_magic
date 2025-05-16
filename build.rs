@@ -99,7 +99,7 @@ pub fn complete_code(signature: &str) -> reqwest::Result<Option<String>> {
 
     let req = client.request(
         Method::POST,
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCD1eut94ge1BhrrTdfznGD8Ntp0yiLMe8",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=<KEY>",
     );
 
     let payload = Payload {
