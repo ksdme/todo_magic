@@ -1,11 +1,19 @@
-// This function takes two numbers and returns the output.
-fn add_two(a: u32, b: u32) -> u64 {
+mod macros;
+
+fn sum(a: u32, b: u32) -> u64 {
+    sprinkle_magic_here!();
+}
+
+fn is_even(a: u32) -> bool {
+    sprinkle_magic_here!();
+}
+
+fn string_reverse(string: String) -> String {
     sprinkle_magic_here!();
 }
 
 fn main() {
-    println!(
-        "{:?}",
-        autocomplete::complete_code("pub fn add_two_numbers(a: u16, b: u32) -> u32 {}")
-    );
+    println!("is_even {:?}", is_even(3));
+    println!("sum {:?}", sum(1, 3));
+    println!("string_reverse {:?}", string_reverse("Hello World".to_owned()));
 }

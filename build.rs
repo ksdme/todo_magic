@@ -4,13 +4,15 @@ use syn::{self, Expr, Item, Stmt, spanned::Spanned};
 
 fn main() {
     println!("cargo:rerun-if-changed=nope");
+    println!("cargo:rerun-if-changed=main.rs");
+    println!("cargo:rerun-if-changed=build.rs");
 
     let contents = fs::read_to_string("src/main.rs").unwrap();
     let ast = syn::parse_file(contents.as_str()).unwrap();
 
     for item in ast.items.iter() {
         if let Item::Fn(function) = item {
-            if let Some(Stmt::Expr(Expr::Macro(macr), _)) = function.block.stmts.first() {
+            if let Some(Stmt::Macro(macr)) = function.block.stmts.first() {
                 let sprinkle_here = macr
                     .mac
                     .path
@@ -105,10 +107,12 @@ pub fn complete_code(signature: &str) -> reqwest::Result<Option<String>> {
             parts: vec![Part {
                 text: format!(
                     r#"
-                    You are a code completion engine.
-                    Your role is to take a function signature in Rust and emit its body.
-                    Do not response with Markdown or code blocks.
+                    You are a Rust code generation engine.
+                    Your role is to take a function signature in Rust and generate its entire body.
+                    If necessary, return appropriate values.
+                    Use explicit return statements.
                     Output the plain contents of the function body.
+                    Do not response with Markdown or code blocks.
 
                     The function signature is,
                     {}
@@ -135,8 +139,6 @@ pub fn complete_code(signature: &str) -> reqwest::Result<Option<String>> {
         // But, this could also remove legitimate brances, oh well.
         Ok(Some(
             code.trim()
-                .trim_matches('{')
-                .trim_matches('}')
                 .trim()
                 .to_owned(),
         ))
