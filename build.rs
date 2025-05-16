@@ -1,16 +1,16 @@
 use quote::ToTokens;
-use std::{env, fmt::format, fs};
-use syn::{self, Item, Stmt};
+use std::{env, fs};
+use syn::{self, Expr, Item, Stmt, spanned::Spanned};
 
 fn main() {
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=nope");
 
     let contents = fs::read_to_string("src/main.rs").unwrap();
     let ast = syn::parse_file(contents.as_str()).unwrap();
 
     for item in ast.items.iter() {
         if let Item::Fn(function) = item {
-            if let Some(Stmt::Macro(macr)) = function.block.stmts.first() {
+            if let Some(Stmt::Expr(Expr::Macro(macr), _)) = function.block.stmts.first() {
                 let sprinkle_here = macr
                     .mac
                     .path
@@ -23,35 +23,38 @@ fn main() {
                 if sprinkle_here {
                     let name = function.sig.ident.to_string();
                     let signature = function.sig.to_token_stream().to_string();
+
                     println!("sprinkling {} for signature {}", name, signature);
-                    sprinkle(signature.as_str(), name.as_str());
+                    sprinkle(name.as_str(), signature.as_str(), macr.span().start().line);
                 }
             }
         }
     }
 
     // I couldn't find another way to debug this script.
-    fs::read_to_string("non_existent_rs").unwrap();
+    // fs::read_to_string("non_existent_rs").unwrap();
 }
 
 // Generates a function body and puts it in the OUT_DIR with the same name as
 // the fn name.
-fn sprinkle(signature: &str, name: &str) {
+fn sprinkle(fn_name: &str, signature: &str, line: usize) {
     let code = complete_code(signature)
         .expect(
             format!(
                 "Something went wrong while generating sprinkle for fn {}",
-                name
+                fn_name
             )
             .as_str(),
         )
-        .expect(format!("Could not generate sprinkle for fn {}", name).as_str());
+        .expect(format!("Could not generate sprinkle for fn {}", fn_name).as_str());
+    println!("Generated {} for {}", code, fn_name);
 
     let out_dir = env::var("OUT_DIR").expect("Could not find OUT_DIR");
-    let base_path = format!("{}/magic", out_dir);
+    let base_path = format!("{}/sprinkles", out_dir);
 
     fs::create_dir_all(base_path.clone()).expect("Could not create magic directory");
-    fs::write(format!("{}/{}", base_path, name), code).expect("Could not write code to magic file");
+    println!("{}", format!("{}/{}", base_path, line));
+    fs::write(format!("{}/{}", base_path, line), code).expect("Could not write code to magic file");
 }
 
 // The autocompleter that will be used.
