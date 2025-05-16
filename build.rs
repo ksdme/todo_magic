@@ -3,7 +3,7 @@ use std::{env, fs};
 use syn::{self, Expr, Item, Stmt, spanned::Spanned};
 
 fn main() {
-    println!("cargo:rerun-if-changed=nope");
+    // println!("cargo:rerun-if-changed=nope");
     println!("cargo:rerun-if-changed=main.rs");
     println!("cargo:rerun-if-changed=build.rs");
 
