@@ -136,12 +136,10 @@ pub fn complete_code(signature: &str) -> reqwest::Result<Option<String>> {
 
     if let Some(code) = autocomplete {
         // The AI loves to add the code in braces.
-        // But, this could also remove legitimate brances, oh well.
-        Ok(Some(
-            code.trim()
-                .trim()
-                .to_owned(),
-        ))
+        // And we need them because include! does a basic syntax check. If the code wasn't in
+        // a braces, that would cause rust to try to interpret each line as an expression which
+        // will obviously fail.
+        Ok(Some(code.trim().trim().to_owned()))
     } else {
         Ok(None)
     }
